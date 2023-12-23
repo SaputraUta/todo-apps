@@ -3,8 +3,8 @@ import CustomButton from "./CustomButton";
 import Link from "next/link";
 
 export default function InputLogin() {
-  const [email, onEmailChange] = useInput("");
-  const [password, onPasswordChange] = useInput("");
+  const {value: email, onChange:onEmailChange} = useInput("");
+  const {value: password, onChange: onPasswordChange} = useInput("");
   return (
     <div className="flex flex-col items-center justify-center w-5/6 gap-2">
       <div className="flex flex-col items-center justify-center">
@@ -20,15 +20,21 @@ export default function InputLogin() {
           type="email"
           name="email"
           id="email"
+          value={email}
+          onChange={onEmailChange}
           className="w-full border-2 border-slate-900 p-1 rounded-lg focus:outline-none text-sm sm:text-base"
           placeholder="Email"
+          required
         />
         <input
           type="password"
           name="password"
           id="password"
+          value={password}
+          onChange={onPasswordChange}
           className="w-full border-2 border-slate-900 p-1 rounded-lg focus:outline-none mb-5 text-sm sm:text-base"
           placeholder="Password"
+          required
         />
         <CustomButton text="Login" />
       </form>

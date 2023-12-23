@@ -1,7 +1,9 @@
-import React from 'react'
+import InputRegister from "@/components/InputRegister"
 
 export default function register() {
   return (
-    <div>index</div>
+    <div className="min-h-screen flex items-center justify-center bg-slate-100">
+        <InputRegister/>
+    </div>
   )
 }

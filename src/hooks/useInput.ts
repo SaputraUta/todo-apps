@@ -5,5 +5,5 @@ export default function useInput(defaultValue = "") {
   const onValueChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setvalue(event.target.value);
   };
-  return [value, onValueChangeHandler];
+  return {value, onChange: onValueChangeHandler};
 }
