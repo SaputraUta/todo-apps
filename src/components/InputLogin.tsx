@@ -1,5 +1,6 @@
 import useInput from "@/hooks/useInput";
 import CustomButton from "./CustomButton";
+import Link from "next/link";
 
 export default function InputLogin() {
   const [email, onEmailChange] = useInput("");
@@ -31,6 +32,13 @@ export default function InputLogin() {
         />
         <CustomButton text="Login" />
       </form>
+      <p className="text-slate-900 text-sm sm:text-base opacity-75">
+        Don't have any account yet?
+        <Link href="/register" className="underline">
+          {" "}
+          register here
+        </Link>
+      </p>
     </div>
   );
 }
