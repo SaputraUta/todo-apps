@@ -1,11 +1,48 @@
 import useInput from "@/hooks/useInput";
 import CustomButton from "./CustomButton";
 import Link from "next/link";
+import { FormEvent, useState } from "react";
+import axios from "axios";
 
 export default function InputRegister() {
-  const {value: username, onChange: onUsernameChange} = useInput("");
-  const {value: email, onChange: onEmailChange} = useInput("");
-  const {value: password, onChange: onPasswordChange} = useInput("");
+  const { value: username, onChange: onUsernameChange } = useInput("");
+  const { value: email, onChange: onEmailChange } = useInput("");
+  const { value: password, onChange: onPasswordChange } = useInput("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+
+  async function onSubmitHandler(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setErrorMessage("");
+    setSuccessMessage("");
+    setIsLoading(true);
+    setErrorMessage(""); // Reset error message
+    try {
+      const formElement = e.target as HTMLFormElement;
+      const formData = new FormData(formElement);
+      const formDataJSON = Object.fromEntries(formData.entries());
+      const response = await axios.post(
+        "http://localhost:3000/api/register",
+        formDataJSON
+      );
+      setIsLoading(false);
+      setSuccessMessage("Registration Success");
+      formElement.reset();
+      console.log(response);
+    } catch (error: any) {
+      setIsLoading(false);
+      if (error.response.status === 400) {
+        setErrorMessage(
+          "Email is already in use. Please use a different email."
+        );
+      } else if (error.response.status === 500) {
+        setErrorMessage("Internal server error. Please try again later.");
+      } else {
+        setErrorMessage("An error occurred during registration.");
+      }
+    }
+  }
   return (
     <div className="flex flex-col items-center justify-center w-5/6 gap-2">
       <div className="flex flex-col items-center justify-center">
@@ -16,7 +53,16 @@ export default function InputRegister() {
           Fill in the form below to register your account
         </p>
       </div>
-      <form className="flex flex-col items-center justify-center gap-2 w-full mt-5 max-w-2xl">
+      {successMessage && (
+        <p className="text-sm sm:text-base text-green-500">{successMessage}</p>
+      )}
+      {errorMessage && (
+        <p className="text-sm sm:text-base text-red-500">{errorMessage}</p>
+      )}
+      <form
+        onSubmit={onSubmitHandler}
+        className="flex flex-col items-center justify-center gap-2 w-full mt-5 max-w-2xl"
+      >
         <input
           type="text"
           name="username"
@@ -47,6 +93,14 @@ export default function InputRegister() {
           placeholder="Password"
           required
         />
+        {isLoading ? (
+          <div className="flex gap-2 mb-2">
+            <div className="w-3 h-3 sm:w-4 sm:h-4 md:w-6 md:h-6 rounded-full border-t-2 border-r-2 border-slate-900 animate-spin" />
+            <p className="text-sm sm:text-base text-slate-900">
+              Registering account
+            </p>
+          </div>
+        ) : null}
         <CustomButton text="Sign up" />
       </form>
       <p className="text-slate-900 text-sm sm:text-base opacity-75">
@@ -57,5 +111,5 @@ export default function InputRegister() {
         </Link>
       </p>
     </div>
-  )
+  );
 }
