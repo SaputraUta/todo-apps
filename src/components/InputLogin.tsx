@@ -1,10 +1,42 @@
 import useInput from "@/hooks/useInput";
 import CustomButton from "./CustomButton";
 import Link from "next/link";
+import { FormEvent, useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/router";
 
 export default function InputLogin() {
-  const {value: email, onChange:onEmailChange} = useInput("");
-  const {value: password, onChange: onPasswordChange} = useInput("");
+  const router = useRouter();
+  const { value: email, onChange: onEmailChange } = useInput("");
+  const { value: password, onChange: onPasswordChange } = useInput("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  async function onSubmitHandler(e: FormEvent<HTMLFormElement>) {
+    setErrorMessage("");
+    setIsLoading(true);
+    e.preventDefault();
+    try {
+      const formElement = e.target as HTMLFormElement;
+      const formData = new FormData(formElement);
+      const formDataJSON = Object.fromEntries(formData.entries());
+      const response = await axios.post(
+        "http://localhost:3000/api/login",
+        formDataJSON
+      );
+      setIsLoading(false);
+      router.push("/");
+      formElement.reset();
+    } catch (error: any) {
+      setIsLoading(false);
+      if (error.response.status === 400) {
+        setErrorMessage("Email not found.");
+      } else if (error.response.status === 401) {
+        setErrorMessage("Wrong password.");
+      } else setErrorMessage("An error occured, please try again later.");
+    }
+  }
+
   return (
     <div className="flex flex-col items-center justify-center w-5/6 gap-2">
       <div className="flex flex-col items-center justify-center">
@@ -15,7 +47,13 @@ export default function InputLogin() {
           Enter your username and password to sign in
         </p>
       </div>
-      <form className="flex flex-col items-center justify-center gap-2 w-full mt-5 max-w-2xl">
+      {errorMessage && (
+        <p className="text-sm sm:text-base text-red-500">{errorMessage}</p>
+      )}
+      <form
+        onSubmit={onSubmitHandler}
+        className="flex flex-col items-center justify-center gap-2 w-full mt-5 max-w-2xl"
+      >
         <input
           type="email"
           name="email"
@@ -36,6 +74,12 @@ export default function InputLogin() {
           placeholder="Password"
           required
         />
+        {isLoading ? (
+          <div className="flex gap-2 mb-2">
+            <div className="w-3 h-3 sm:w-4 sm:h-4 md:w-6 md:h-6 rounded-full border-t-2 border-r-2 border-slate-900 animate-spin" />
+            <p className="text-sm sm:text-base text-slate-900">Logging in</p>
+          </div>
+        ) : null}
         <CustomButton text="Login" />
       </form>
       <p className="text-slate-900 text-sm sm:text-base opacity-75">

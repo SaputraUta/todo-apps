@@ -29,7 +29,6 @@ export default function InputRegister() {
       setIsLoading(false);
       setSuccessMessage("Registration Success");
       formElement.reset();
-      console.log(response);
     } catch (error: any) {
       setIsLoading(false);
       if (error.response.status === 400) {
