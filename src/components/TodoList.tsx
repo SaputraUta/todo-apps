@@ -7,6 +7,7 @@ import { IoClose } from "react-icons/io5";
 import { IoIosAddCircle } from "react-icons/io";
 import { getCurrentDate } from "../utils/getCurrentDate";
 import TodoContext from "@/context/todosContext";
+import LogoutButton from "./LogoutButton";
 
 interface Todos {
   id: string;
@@ -110,6 +111,19 @@ export default function TodoList() {
     getData();
   }, []);
 
+  useEffect(() => {
+    const handleEscapeKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && noteModal) {
+        setNoteModal(false);
+      }
+    };
+    document.addEventListener("keydown", handleEscapeKey);
+
+    return () => {
+      document.removeEventListener("keydown", handleEscapeKey);
+    };
+  }, [noteModal]);
+
   if (isLoading) {
     return (
       <div className="flex gap-2 mt-5 justify-center items-center">
@@ -148,9 +162,15 @@ export default function TodoList() {
             Todo list
           </p>
         </div>
-        <button onClick={() => setNoteModal(true)} className="hover:scale-105">
-          <IoIosAddCircle size={25} />
-        </button>
+        <div className="flex gap-10">
+          <button
+            onClick={() => setNoteModal(true)}
+            className="hover:scale-105"
+          >
+            <IoIosAddCircle size={25} />
+          </button>
+          <LogoutButton />
+        </div>
       </nav>
       {processMessage && (
         <p className="text-center mt-5 text-slate-900 text-sm sm:text-base">

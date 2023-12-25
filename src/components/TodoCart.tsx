@@ -2,7 +2,7 @@ import DeleteButton from "./DeleteButton";
 import EditButton from "./EditButton";
 import { showFormattedDate } from "../utils/showFormattedDate";
 import EditModal from "./EditModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface Props {
   id: string;
@@ -35,6 +35,19 @@ export default function TodoCart({
   function openModal() {
     setEditModal(true);
   }
+
+  useEffect(() => {
+    const handleEscapeKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && editModal) {
+        setEditModal(false);
+      }
+    };
+    document.addEventListener("keydown", handleEscapeKey);
+
+    return () => {
+      document.removeEventListener("keydown", handleEscapeKey);
+    };
+  }, [editModal]);
 
   return (
     <div className="flex justify-between items-center w-full bg-slate-200 rounded-lg">
