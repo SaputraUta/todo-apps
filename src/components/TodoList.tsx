@@ -5,6 +5,8 @@ import UserContext from "@/context/userContext";
 import CustomButton from "./CustomButton";
 import { IoClose } from "react-icons/io5";
 import { IoIosAddCircle } from "react-icons/io";
+import { getCurrentDate } from "../utils/getCurrentDate";
+import TodoContext from "@/context/todosContext";
 
 interface Todos {
   id: string;
@@ -62,9 +64,7 @@ export default function TodoList() {
         "http://localhost:3000/api/todo",
         formDataJSON
       );
-      const tmp = [...todos];
-      tmp.push(response.data.todos);
-      setTodos(tmp);
+      updateTodos(response);
       setIsAddingTodo(false);
       setNoteModal(false);
       setDeadline("");
@@ -79,6 +79,12 @@ export default function TodoList() {
         setErrorMessage("Something went wrong, please try again later");
       }
     }
+  }
+
+  function updateTodos(response: { data: { todos: Todos } }) {
+    const tmp = [...todos];
+    tmp.push(response.data.todos);
+    setTodos(tmp);
   }
 
   async function deleteTodoHandler(id: string) {
@@ -98,14 +104,6 @@ export default function TodoList() {
         setErrorProcessMessage("Bad request.");
       } else setErrorProcessMessage("Something went wrong, try again later.");
     }
-  }
-
-  function getCurrentDate() {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, "0");
-    const day = String(today.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
   }
 
   useEffect(() => {
@@ -140,7 +138,7 @@ export default function TodoList() {
   }
 
   return (
-    <>
+    <TodoContext.Provider value={{ todos, setTodos }}>
       <nav className="flex justify-between items-center mt-10 w-5/6">
         <div className="flex flex-col gap-1">
           <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-medium tracking-wider">
@@ -191,6 +189,7 @@ export default function TodoList() {
                     name="title"
                     id="title"
                     type="text"
+                    required
                     placeholder="Todo"
                     value={todo}
                     onChange={(e) => setTodo(e.target.value)}
@@ -208,6 +207,7 @@ export default function TodoList() {
                     name="deadline"
                     id="deadline"
                     type="date"
+                    required
                     value={deadline}
                     onChange={(e) => setDeadline(e.target.value)}
                     min={getCurrentDate()}
@@ -247,6 +247,6 @@ export default function TodoList() {
           />
         ))}
       </div>
-    </>
+    </TodoContext.Provider>
   );
 }

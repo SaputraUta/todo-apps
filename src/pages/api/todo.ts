@@ -72,6 +72,31 @@ async function handleDeleteMethod(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
+async function handleUpdateMethod(req: NextApiRequest, res: NextApiResponse) {
+  const data = req.body;
+  console.log(data);
+  if (!data.todoId || !data.title || !data.deadline) {
+    return res.status(400).json({ message: "Bad Request" });
+  }
+  try {
+    const response = await prisma.todo.update({
+      where: {
+        id: data.todoId.toString(),
+      },
+      data: {
+        title: data.title,
+        deadline: data.deadline,
+      },
+    });
+    res.status(200).json({ message: "Todo updated", todo: response });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      message: "Terjadi kesalahan saat mengupdate data",
+    });
+  }
+}
+
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
     return handleGetMethod(req, res);
@@ -81,5 +106,8 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   }
   if (req.method === "DELETE") {
     return handleDeleteMethod(req, res);
+  }
+  if (req.method === "PUT") {
+    return handleUpdateMethod(req, res);
   }
 }
