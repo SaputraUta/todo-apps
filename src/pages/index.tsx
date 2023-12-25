@@ -1,6 +1,4 @@
 import Header from "@/components/Header";
-import Navigation from "@/components/Navigation";
-import TodoList from "@/components/TodoList";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import UserContext from "@/context/userContext";
@@ -35,7 +33,7 @@ export default function Home() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex justify-center items-center">
+      <div className="min-h-screen flex justify-center gap-1 items-center">
         <div className="w-3 h-3 sm:w-4 sm:h-4 md:w-6 md:h-6 rounded-full border-t-2 border-r-2 border-slate-900 animate-spin" />
         <p className="text-sm sm:text-base text-slate-900">
           Loading user data...
