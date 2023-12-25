@@ -6,7 +6,7 @@ interface Props {
 
 export default function EditButton({ onEdit }: Props) {
   return (
-    <button>
+    <button className="hover:scale-105">
       <AiTwotoneEdit size={25} />
     </button>
   );

@@ -3,11 +3,13 @@ import EditButton from "./EditButton";
 import { showFormattedDate } from "../utils/showFormattedDate";
 
 interface Props {
+  id: string;
   title: string;
   deadline: string;
+  onDelete: (id: string) => void;
 }
 
-export default function TodoCart({ title, deadline }: Props) {
+export default function TodoCart({ id, title, deadline, onDelete }: Props) {
   return (
     <div className="flex justify-between items-center w-full bg-slate-200 rounded-lg">
       <div className="py-4 px-4 flex flex-col gap-1 w-5/6">
@@ -19,7 +21,7 @@ export default function TodoCart({ title, deadline }: Props) {
         </p>
       </div>
       <div className="flex gap-2 py-4 px-4">
-        <DeleteButton />
+        <DeleteButton onDelete={onDelete} id={id} />
         <EditButton />
       </div>
     </div>

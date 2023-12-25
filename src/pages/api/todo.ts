@@ -49,11 +49,37 @@ async function handleGetMethod(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
+async function handleDeleteMethod(req: NextApiRequest, res: NextApiResponse) {
+  const data = req.query;
+  console.log(data);
+  if (!data.todoId) {
+    return res.status(400).json({ message: "Bad Request" });
+  }
+  try {
+    await prisma.todo.delete({
+      where: {
+        id: data.todoId.toString(),
+      },
+    });
+    res
+      .status(200)
+      .json({ id: data.todoId.toString(), message: "Todo Deleted." });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      message: "Terjadi kesalahan saat menghapus data",
+    });
+  }
+}
+
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
     return handleGetMethod(req, res);
   }
   if (req.method === "POST") {
     return handlePostMethod(req, res);
+  }
+  if (req.method === "DELETE") {
+    return handleDeleteMethod(req, res);
   }
 }

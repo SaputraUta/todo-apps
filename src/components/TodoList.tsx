@@ -25,6 +25,8 @@ export default function TodoList() {
   const [isAddingTodo, setIsAddingTodo] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [initialErrorMessage, setInitialErrorMessage] = useState("second");
+  const [processMessage, setProcessMessage] = useState("");
+  const [errorProcessMessage, setErrorProcessMessage] = useState("");
 
   async function getData() {
     setInitialErrorMessage("");
@@ -76,6 +78,25 @@ export default function TodoList() {
       } else {
         setErrorMessage("Something went wrong, please try again later");
       }
+    }
+  }
+
+  async function deleteTodoHandler(id: string) {
+    setProcessMessage("");
+    setErrorProcessMessage("");
+    try {
+      setProcessMessage("Deleting todo...");
+      const response = await axios.delete(
+        `http://localhost:3000/api/todo?todoId=${id}`
+      );
+      const temp = todos.filter((item) => item.id !== response.data.id);
+      setTodos(temp);
+      setProcessMessage("");
+    } catch (error: any) {
+      setProcessMessage("");
+      if (error.response.message === 400) {
+        setErrorProcessMessage("Bad request.");
+      } else setErrorProcessMessage("Something went wrong, try again later.");
     }
   }
 
@@ -133,6 +154,16 @@ export default function TodoList() {
           <IoIosAddCircle size={25} />
         </button>
       </nav>
+      {processMessage && (
+        <p className="text-center mt-5 text-slate-900 text-sm sm:text-base">
+          {processMessage}
+        </p>
+      )}
+      {errorProcessMessage && (
+        <p className="text-center mt-5 text-red-500 text-sm sm:text-base">
+          {errorProcessMessage}
+        </p>
+      )}
 
       {noteModal && (
         <div className="min-h-screen w-full fixed top-0 left-0 flex items-center justify-center bg-black bg-opacity-70 z-50">
@@ -207,7 +238,13 @@ export default function TodoList() {
 
       <div className="mt-5 w-5/6 flex flex-col gap-4">
         {todos?.map((todo) => (
-          <TodoCart key={todo.id} title={todo.title} deadline={todo.deadline} />
+          <TodoCart
+            key={todo.id}
+            id={todo.id}
+            onDelete={deleteTodoHandler}
+            title={todo.title}
+            deadline={todo.deadline}
+          />
         ))}
       </div>
     </>
