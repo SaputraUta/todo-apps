@@ -35,6 +35,8 @@ export default function InputRegister() {
         setErrorMessage(
           "Email is already in use. Please use a different email."
         );
+      } else if (error.response.status === 403) {
+        setErrorMessage("Password must be at least 8 characters long");
       } else if (error.response.status === 500) {
         setErrorMessage("Internal server error. Please try again later.");
       } else {

@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../prisma/client";
 import argon2 from "argon2";
+import passwordSchema from "../../validation/registration_validation";
 
 export default async function registerHandler(
   req: NextApiRequest,
@@ -8,6 +9,12 @@ export default async function registerHandler(
 ) {
   const data = req.body;
   console.log(data);
+
+  const passwordValidation = passwordSchema.safeParse(data.password);
+  if (!passwordValidation.success) {
+    console.log(passwordValidation.error);
+    return res.status(403).json(passwordValidation.error.flatten().fieldErrors);
+  }
 
   try {
     const isUserExist = await prisma.user.findUnique({
