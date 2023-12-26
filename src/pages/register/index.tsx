@@ -3,7 +3,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-export default function register() {
+export default function Register() {
   const router = useRouter();
   const [isChecking, setIsChecking] = useState(false);
 

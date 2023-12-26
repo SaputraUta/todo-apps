@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 
-export default function login() {
+export default function Login() {
   const router = useRouter();
   const [isChecking, setIsChecking] = useState(false);
 

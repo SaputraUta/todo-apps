@@ -83,7 +83,7 @@ export default function InputLogin() {
         <CustomButton text="Login" />
       </form>
       <p className="text-slate-900 text-sm sm:text-base opacity-75">
-        Don't have any account yet?
+        Don&apos;t have any account yet?
         <Link href="/register" className="underline">
           {" "}
           register here
