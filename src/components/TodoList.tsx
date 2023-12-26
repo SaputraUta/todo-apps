@@ -143,14 +143,6 @@ export default function TodoList() {
     );
   }
 
-  if (todos.length < 1) {
-    return (
-      <p className="text-sm sm:text-base text-center font-medium mt-5">
-        No todos.
-      </p>
-    );
-  }
-
   return (
     <TodoContext.Provider value={{ todos, setTodos }}>
       <nav className="flex justify-between items-center mt-10 w-5/6">
@@ -254,6 +246,11 @@ export default function TodoList() {
             </div>
           </div>
         </div>
+      )}
+      {todos.length < 1 && (
+        <p className="text-sm sm:text-base text-center font-medium mt-5">
+          No todos.
+        </p>
       )}
 
       <div className="mt-5 w-5/6 flex flex-col gap-4">
