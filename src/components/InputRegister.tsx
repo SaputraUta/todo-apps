@@ -23,7 +23,7 @@ export default function InputRegister() {
       const formData = new FormData(formElement);
       const formDataJSON = Object.fromEntries(formData.entries());
       const response = await axios.post(
-        "http://localhost:3000/api/register",
+        "https://todo-apps-ochre.vercel.app/api/register",
         formDataJSON
       );
       setIsLoading(false);

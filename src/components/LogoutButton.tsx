@@ -10,7 +10,7 @@ export default function LogoutButton() {
   const [logoutModal, setLogoutModal] = useState(false);
   async function onLogoutHandler() {
     setIsLoading(true);
-    const response = await axios.get("http://localhost:3000/api/logout");
+    const response = await axios.get("https://todo-apps-ochre.vercel.app/api/logout");
     setIsLoading(false);
     router.push("/login");
   }

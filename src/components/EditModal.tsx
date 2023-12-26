@@ -48,7 +48,7 @@ export default function EditModal({
       formData.append("deadline", ISOTypeDeadline);
       const formDataJSON = Object.fromEntries(formData.entries());
       const response = await axios.put(
-        "http://localhost:3000/api/todo",
+        "https://todo-apps-ochre.vercel.app/api/todo",
         formDataJSON
       );
       const todos = await getData(user.id);

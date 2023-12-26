@@ -21,7 +21,7 @@ export default function InputLogin() {
       const formData = new FormData(formElement);
       const formDataJSON = Object.fromEntries(formData.entries());
       const response = await axios.post(
-        "http://localhost:3000/api/login",
+        "https://todo-apps-ochre.vercel.app/api/login",
         formDataJSON
       );
       setIsLoading(false);

@@ -35,7 +35,7 @@ export default function TodoList() {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/todo?userId=${user.id}`
+        `https://todo-apps-ochre.vercel.app/api/todo?userId=${user.id}`
       );
       setTodos(response.data.todos);
       setIsLoading(false);
@@ -61,7 +61,7 @@ export default function TodoList() {
       formData.append("deadline", ISOTypeDeadline);
       const formDataJSON = Object.fromEntries(formData.entries());
       const response = await axios.post(
-        "http://localhost:3000/api/todo",
+        "https://todo-apps-ochre.vercel.app/api/todo",
         formDataJSON
       );
       updateTodos(response);
@@ -93,7 +93,7 @@ export default function TodoList() {
     try {
       setProcessMessage("Deleting todo...");
       const response = await axios.delete(
-        `http://localhost:3000/api/todo?todoId=${id}`
+        `https://todo-apps-ochre.vercel.app/api/todo?todoId=${id}`
       );
       const temp = todos.filter((item) => item.id !== response.data.id);
       setTodos(temp);

@@ -11,7 +11,7 @@ export default function Login() {
     const checkTokenWithAPI = async () => {
       try {
         setIsChecking(true);
-        const response = await axios.get("http://localhost:3000/api/me");
+        const response = await axios.get("https://todo-apps-ochre.vercel.app/api/me");
         if (response.data.user) {
           router.push("/");
         }

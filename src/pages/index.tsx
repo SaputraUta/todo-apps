@@ -18,7 +18,7 @@ export default function Home() {
     const fetchUserData = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.get("http://localhost:3000/api/me");
+        const response = await axios.get("https://todo-apps-ochre.vercel.app/api/me");
         setUser(response.data.user);
         setIsLoading(false);
       } catch (error: any) {
