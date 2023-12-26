@@ -49,18 +49,19 @@ export default function LogoutButton() {
               <IoClose size={25} />
             </button>
             <div className="p-10">
+              <p className="text-center pb-5 font-medium tracking-wider text-sm sm:text-base md:text-lg lg:text-xl text-slate-900">Are you sure want to log out?</p>
               <div className="self-center left-[43%] sm:left-1/2 flex justify-center items-center gap-5">
                 <button
                   onClick={onLogoutHandler}
-                  className="bg-slate-900 text-slate-100 py-2 px-10 sm:px-14 rounded-lg text-sm sm:text-base"
+                  className="bg-slate-900 text-slate-100 py-2 px-10 sm:px-14 lg:px-16 rounded-lg text-sm sm:text-base font-medium"
                 >
-                  Ya
+                  Yes
                 </button>
                 <button
                   onClick={() => setLogoutModal(false)}
-                  className="text-slate-900 bg-slate-100 border-2 border-slate-900 py-2 px-6 sm:px-10 rounded-lg text-sm sm:text-base"
+                  className="text-slate-900 bg-slate-100 border-2 border-slate-900 py-2 px-10 sm:px-14 lg:px-16 rounded-lg text-sm sm:text-base font-medium"
                 >
-                  Tidak
+                  No
                 </button>
               </div>
             </div>

@@ -30,7 +30,6 @@ export default function TodoList() {
   const [initialErrorMessage, setInitialErrorMessage] = useState("second");
   const [processMessage, setProcessMessage] = useState("");
   const [errorProcessMessage, setErrorProcessMessage] = useState("");
-
   async function getData() {
     setInitialErrorMessage("");
     setIsLoading(true);
